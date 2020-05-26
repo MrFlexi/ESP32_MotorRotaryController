@@ -4,15 +4,22 @@
 #include <Servo.h>
 
 
+//----------------------------------------------------------------------
 // Servo
+//----------------------------------------------------------------------
 Servo servo1;
 static const int servoPin =  GPIO_NUM_34;
 
+//----------------------------------------------------------------------
 // Lichtschranke Pins
+//----------------------------------------------------------------------
 gpio_num_t aPinNumber = GPIO_NUM_33;
 gpio_num_t bPinNumber = GPIO_NUM_32;
 
+
+//----------------------------------------------------------------------
 // Puls Counter
+//----------------------------------------------------------------------
 unsigned long durationA;
 unsigned long durationB;
 volatile int32_t 	count=0;
@@ -55,14 +62,14 @@ void setup_pulsecounter(){
 	gpio_set_direction(aPinNumber, GPIO_MODE_INPUT);
 	gpio_pulldown_en(aPinNumber);
 	
-	r_enc_config.pulse_gpio_num = aPinNumber; //Rotary Encoder Chan A ll
+	r_enc_config.pulse_gpio_num = aPinNumber; 	//Rotary Encoder Chan A 
 	r_enc_config.ctrl_gpio_num = bPinNumber;    //Rotary Encoder Chan B
 
 	r_enc_config.unit = unit;
 	r_enc_config.channel = PCNT_CHANNEL_0;
 
-	r_enc_config.pos_mode = PCNT_COUNT_INC; //Count Only On Rising-Edges
-	r_enc_config.neg_mode = PCNT_COUNT_DIS;   // Discard Falling-Edge
+	r_enc_config.pos_mode = PCNT_COUNT_INC; 	//Count Only On Rising-Edges
+	r_enc_config.neg_mode = PCNT_COUNT_DIS;   	// Discard Falling-Edge
 
 	r_enc_config.lctrl_mode = PCNT_MODE_KEEP;    // Rising A on HIGH B = CW Step
 	r_enc_config.hctrl_mode = PCNT_MODE_REVERSE; // Rising A on LOW B = CCW Step
@@ -94,8 +101,6 @@ void setup()
 	setup_servo();
 	setup_pulsecounter();
 }
-
-
 
 
 void loop() {
