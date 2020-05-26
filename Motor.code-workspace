@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "..\\NodeMcu_CNY70_Position_Controll"
+		},
+		{
+			"name": "ESP32_MotorRotaryController",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
