@@ -31,7 +31,7 @@ void setup(){
 	gpio_pulldown_en(aPinNumber);
 	
 	// Set up encoder PCNT configuration
-	r_enc_config.pulse_gpio_num = aPinNumber; //Rotary Encoder Chan A
+	r_enc_config.pulse_gpio_num = aPinNumber; //Rotary Encoder Chan A ll
 	r_enc_config.ctrl_gpio_num = bPinNumber;    //Rotary Encoder Chan B
 
 	r_enc_config.unit = unit;
