@@ -1,18 +1,44 @@
 #include <Arduino.h>
 #include <driver/gpio.h>
 #include "driver/pcnt.h"
+#include <Servo.h>
 
 
+// Servo
+Servo servo1;
+static const int servoPin =  GPIO_NUM_34;
+
+// Lichtschranke Pins
 gpio_num_t aPinNumber = GPIO_NUM_33;
 gpio_num_t bPinNumber = GPIO_NUM_32;
 
+// Puls Counter
 unsigned long durationA;
 unsigned long durationB;
-
 volatile int32_t 	count=0;
 pcnt_unit_t 		unit = PCNT_UNIT_0;
-
 pcnt_config_t r_enc_config;
+
+
+void setup_servo() {
+    servo1.attach(	servoPin, Servo::CHANNEL_NOT_ATTACHED, 20,	180	);
+}
+
+void servo_sweep() {
+    for(int posDegrees = 0; posDegrees <= 180; posDegrees++) {
+        servo1.write(posDegrees);
+        Serial.println(posDegrees);
+        delay(50);
+    }
+
+	delay(1000);
+
+	for(int posDegrees = 180; posDegrees > 0; posDegrees--) {
+        servo1.write(posDegrees);
+        Serial.println(posDegrees);
+        delay(50);
+    }
+}
 
 
 int16_t getCountRaw() {
@@ -22,15 +48,13 @@ int16_t getCountRaw() {
 }
 
 
-void setup(){
+void setup_pulsecounter(){
 
-	Serial.begin(115200);
-
+	// Puls Counter Setup
 	gpio_pad_select_gpio(aPinNumber);
 	gpio_set_direction(aPinNumber, GPIO_MODE_INPUT);
 	gpio_pulldown_en(aPinNumber);
 	
-	// Set up encoder PCNT configuration
 	r_enc_config.pulse_gpio_num = aPinNumber; //Rotary Encoder Chan A ll
 	r_enc_config.ctrl_gpio_num = bPinNumber;    //Rotary Encoder Chan B
 
@@ -48,7 +72,6 @@ void setup(){
 	
 	pcnt_unit_config(&r_enc_config);
 
-
 	// Filter out bounces and noise
 	pcnt_set_filter_value(unit, 250);  // Filter Runt Pulses
 	pcnt_filter_enable(unit);
@@ -63,8 +86,13 @@ void setup(){
 	pcnt_intr_enable(unit);
 	pcnt_counter_resume(unit);
 
+}
 
-
+void setup()
+{
+	Serial.begin(115200);
+	setup_servo();
+	setup_pulsecounter();
 }
 
 
